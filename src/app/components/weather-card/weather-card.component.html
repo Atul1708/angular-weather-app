@@ -1,0 +1,72 @@
+<div class="card-container">
+  <div class="wrapper">
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit(myForm)">
+      <div class="input-field">
+        <input
+          type="text"
+          name=""
+          placeholder="City name..."
+          formControlName="cityName"
+        />
+        <div class="btn">
+          <button type="submit" class="search">
+            <lucide-angular
+              [size]="16"
+              [name]="icons"
+              class="my-icon"
+            ></lucide-angular>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="card" *ngIf="isDataAvailable">
+      <p class="city" *ngIf="cityName">
+        {{ cityName | uppercase }}, {{ countryName }}
+      </p>
+      <!-- <p class="date">{{ weatherData.dt_txt.split(" ")[0] | date }}</p> -->
+      <span *ngIf="!weatherData.weather[0].description">--weather--</span>
+      <p class="weather">{{ weatherData.weather[0].description }}</p>
+      <img
+        class="img"
+        src="https://openweathermap.org/img/wn/{{
+          weatherData.weather[0].icon
+        }}@4x.png"
+        alt=""
+      />
+      <p class="temp">
+        {{
+          weatherData.main.temp
+            ? convertKelvinToCelsius(weatherData.main.temp) + "°"
+            : ""
+        }}C
+      </p>
+
+      <div class="minmaxContainer">
+        <div class="min">
+          <p class="minTemp">
+            <span class="minHeading" *ngIf="weatherData.main.temp_min"
+              >Min</span
+            >
+            {{ convertKelvinToCelsius(weatherData.main.temp_min) }}°C
+          </p>
+        </div>
+        <div class="line"></div>
+        <div class="max">
+          <p class="maxTemp">
+            <span class="maxHeading" *ngIf="weatherData.main.temp_max"
+              >Max</span
+            >
+            {{ convertKelvinToCelsius(weatherData.main.temp_max) }}°C
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" *ngIf="showModel" [ngClass]="showModel ? 'show' : ''">
+      <div class="modal-content">
+        {{ " opps! data not available for " + modelCityName }}
+      </div>
+    </div>
+  </div>
+</div>
